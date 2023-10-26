@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(value = UserApi.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 @ContextConfiguration(classes = UserApi.class)
-public class UserApiTest {
+class UserApiTest {
 
     @MockBean
     private JwtUtil jwtUtil;
