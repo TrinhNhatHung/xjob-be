@@ -29,8 +29,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args:
-            -Dsonar.projectKey= TrinhNhatHung_xjob-be
-            -Dsonar.organization= trinhnhathung-1
+            -Dsonar.projectKey=TrinhNhatHung_xjob-be
+            -Dsonar.organization=trinhnhathung-1
   docker:
     runs-on: ubuntu-latest
     needs: [build, analysis]
