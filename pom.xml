@@ -13,7 +13,7 @@
 	<name>xjob-be</name>
 	<description>xjob-The work &apos;s world</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
