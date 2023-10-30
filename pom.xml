@@ -14,6 +14,8 @@
 	<description>xjob-The work &apos;s world</description>
 	<properties>
 		<java.version>17</java.version>
+		<sonar.organization>trinhnhathung-1</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
