@@ -29,15 +29,14 @@ public class CommonApi {
 	}
 	
 	@GetMapping("/common/dashboard")
-	public ResponseEntity<?> getDashboard(){
+	public ResponseEntity<Object> getDashboard(){
 		try {
 			Map<String,Object> map = commonService.getDashboard();
 			List<Map<String, Object>> mostSkill = skillService.getMostSkil();
 			map.put("mostSkill", mostSkill);
-			return new ResponseEntity<Object>(map, HttpStatus.OK);
+			return new ResponseEntity<>(map, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
