@@ -49,3 +49,16 @@ jobs:
         with:
           push: true
           tags: trinhnhathung/xjob:lastest
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [docker]
+    steps:
+      - name: Deploy via SSH action
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+         host: ${{ secrets.HOST }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
+         port: 22
+         script:
+           - bash ./deploy/deploy.sh
