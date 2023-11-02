@@ -60,6 +60,6 @@ jobs:
          username: ${{ secrets.USERNAME }}
          password: ${{ secrets.PASSWORD }}
          port: 22
-         script:
+         script: |
            cd /home/hung01/deploy/
            ./deploy.sh
