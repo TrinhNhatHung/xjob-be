@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService{
 	@Autowired
 	private UserDao userDao;
 
+	@Cacheable(value = "GetUserByName", key = "#uid")
 	@Override
 	public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
 		User user = userDao.getById(User.class, uid);

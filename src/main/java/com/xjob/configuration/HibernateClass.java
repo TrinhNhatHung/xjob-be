@@ -1,11 +1,5 @@
 package com.xjob.configuration;
 
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +8,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Properties;
 
 @Configuration
+@EnableTransactionManagement
 public class HibernateClass {
-	@Autowired
+    @Autowired
     private Environment env;
 
     @Bean(name = "dataSource")
@@ -39,7 +40,12 @@ public class HibernateClass {
         properties.put("current_session_context_class",
                 env.getProperty("spring.jpa.properties.hibernate.current_session_context_class"));
 
-        properties.put("hibernate.ddl-auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+
+        properties.put("hibernate.cache.use_second_level_cache", env.getProperty("spring.jpa.properties.hibernate.cache.use_second_level_cache"));
+        properties.put("hibernate.cache.use_query_cache", env.getProperty("spring.jpa.properties.hibernate.cache.use_query_cache"));
+        properties.put("hibernate.cache.region.factory_class", env.getProperty("spring.jpa.properties.hibernate.cache.region.factory_class"));
+        properties.put("hibernate.cache.redisson.config", env.getProperty("spring.jpa.hibernate.cache.redisson.config"));
 
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setPackagesToScan("com.xjob.persistence");

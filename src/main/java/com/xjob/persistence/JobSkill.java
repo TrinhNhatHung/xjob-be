@@ -2,24 +2,23 @@ package com.xjob.persistence;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Table(name = "job_skill")
 @Entity(name = "job_skill")
 @Setter
 @Getter
-public class JobSkill {
-	
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class JobSkill implements Serializable{
+
+	private static final long serialVersionUID = 1234567L;
+
 	@EmbeddedId
 	private Id jobSkillId;
 	

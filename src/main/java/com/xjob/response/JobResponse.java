@@ -89,24 +89,24 @@ public class JobResponse {
 		}
 		jobMap.put("skills", skills);
 		List<Proposal> proposals = job.getProposals();
-		long proposalCount = proposals.stream()
-				.filter(proposal -> BusinessConst.PROPOSAL_PROPOSAL.equals(proposal.getProposalId().getKind()))
-				.count();
-		jobMap.put("proposals", proposalCount);
-		long hiredCount = proposals.stream()
-				.filter(proposal -> BusinessConst.PROPOSAL_HIRED.equals(proposal.getProposalId().getKind()))
-				.count();
-		jobMap.put("hired", hiredCount);
+//		long proposalCount = proposals.stream()
+//				.filter(proposal -> BusinessConst.PROPOSAL_PROPOSAL.equals(proposal.getProposalId().getKind()))
+//				.count();
+//		jobMap.put("proposals", proposalCount);
+//		long hiredCount = proposals.stream()
+//				.filter(proposal -> BusinessConst.PROPOSAL_HIRED.equals(proposal.getProposalId().getKind()))
+//				.count();
+//		jobMap.put("hired", hiredCount);
 		List<JobStatus> jobStatusList = job.getJobStatus();
 		JobStatus jobStatus = new JobStatus();
 		Id id = new Id();
 		id.setStatusId(0);
 		jobStatus.setJobStatusId(id);
-		for (JobStatus jobStatus2 : jobStatusList) {
-			if (jobStatus.getJobStatusId().getStatusId() < jobStatus2.getJobStatusId().getStatusId()) {
-				jobStatus = jobStatus2;
-			}
-		}
+//		for (JobStatus jobStatus2 : jobStatusList) {
+//			if (jobStatus.getJobStatusId().getStatusId() < jobStatus2.getJobStatusId().getStatusId()) {
+//				jobStatus = jobStatus2;
+//			}
+//		}
 		try {
 			jobMap.put("status", jobStatus.getStatus().getStatusName());
 		} catch (Exception e) {

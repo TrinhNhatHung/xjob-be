@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +58,7 @@ public class JobService {
 		return jobDao.getByAuthor(uid, limit, page);
 	}
 
+	@Cacheable(key = "'GetAllJob:' + #limit + '/' + #page", value = "jobCache")
 	public List<Job> get(Integer limit, Integer page) {
 		if (limit == null) {
 			limit = 10000;
@@ -101,7 +104,8 @@ public class JobService {
 
 		return jobId;
 	}
-	
+
+	@CacheEvict(value = "jobCache", allEntries = true)
 	@Transactional
 	public void updateJob(Job job, List<Skill> skills) {
 		jobDao.insertOrUpdate(job);
@@ -195,12 +199,14 @@ public class JobService {
 		List<Job> jobs =  jobDao.getByListId(jobIds);
 		return jobs;
 	}
-	
+
+	@CacheEvict(value = "jobCache", allEntries = true)
 	@Transactional
 	public void closeJob(Integer jobId) {
 		jobStatusDao.closeJob(jobId);
 	}
-	
+
+	@CacheEvict(value = "jobCache", allEntries = true)
 	@Transactional
 	public void completeJob(Integer jobId) {
 		jobStatusDao.completeJob(jobId);

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,10 @@ public class JobApi {
 	
 	@GetMapping("/jobs")
 	public ResponseEntity<Object> getJobList(@RequestParam(name = "limit", required = false) Integer limit,
-			@RequestParam(name = "page", required = false) Integer page){
+											 @RequestParam(name = "page", required = false) Integer page,
+											 HttpSession httpSession){
 		try {
+			httpSession.setAttribute("name", Math.random() * 100);
 			List<Job> jobs = jobService.get(limit, page);
 			Map<String, Object> data = new HashMap<>();
 			Map<String, Object> result;
@@ -65,7 +68,8 @@ public class JobApi {
 			result = ResponseUtil.createResponse(true, data, null);
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 	
@@ -176,17 +180,17 @@ public class JobApi {
 	
 	@PostMapping("/update-job")
 	public ResponseEntity<Object> updateJob(@RequestParam(name = "jobId") Integer jobId,
-			@RequestParam(name = "title") String title,
-			@RequestParam(name = "detail") String detail,
-			@RequestParam(name = "skills") String skillsJson,
-			@RequestParam(name = "paymentKind") String paymentKind,
-			@RequestParam(name = "price") Integer price,
+			@RequestParam(name = "title",required = false) String title,
+			@RequestParam(name = "detail",required = false) String detail,
+			@RequestParam(name = "skills",required = false) String skillsJson,
+			@RequestParam(name = "paymentKind",required = false) String paymentKind,
+			@RequestParam(name = "price",required = false) Integer price,
 			@RequestParam(name = "termClass", required = false) String termClass,
 			@RequestParam(name = "termFrom", required = false) Integer termFrom,
 			@RequestParam(name = "termTo", required = false) Integer termTo,
 			@RequestParam(name = "hourPerWeek", required = false) Integer hourPerWeek){
 		String uid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+//		String uid = "f4dd0efd-b136-4718-b6b9-29e837d8cc25";
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			List<Skill> skills = mapper.readValue(skillsJson, new TypeReference<List<Skill>>() {});
@@ -208,6 +212,7 @@ public class JobApi {
 			jobService.updateJob(job, skills);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

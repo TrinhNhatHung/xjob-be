@@ -1,12 +1,11 @@
 package com.xjob.dao;
 
-import java.util.List;
-
+import com.xjob.constant.BusinessConst;
+import com.xjob.persistence.Job;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
-import com.xjob.constant.BusinessConst;
-import com.xjob.persistence.Job;
+import java.util.List;
 
 @Repository
 public class JobDao extends EntityDao<Job>{
@@ -25,13 +24,14 @@ public class JobDao extends EntityDao<Job>{
 //		jobs = jobs.stream().filter(t -> t.getJobStatus().size() <= 1).collect(Collectors.toList());
 		return jobs;
 	}
-	
-	public List<Job> get( Integer limit, Integer page){
+
+	public List<Job>  get( Integer limit, Integer page){
 		final String SQL = "SELECT * FROM job\r\n"
 				+ "ORDER BY update_at desc\r\n"
 				+ "LIMIT :limit";
 		NativeQuery<Job> query = openSession().createNativeQuery(SQL, Job.class)
 				.setParameter("limit", page * limit);
+		query.setCacheable(true);
 		return query.getResultList();
 	}
 	

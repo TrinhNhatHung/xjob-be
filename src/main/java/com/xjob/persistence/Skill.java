@@ -1,16 +1,15 @@
 package com.xjob.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
 
 @Table(name = "skill")
 @Entity(name = "skill")
@@ -18,8 +17,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class Skill {
-	
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Skill implements Serializable {
+	private static final long serialVersionUID = 1234567L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "skill_id")

@@ -1,14 +1,6 @@
 package com.xjob.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.io.Serializable;
 
 @Table(name = "experience")
 @Entity(name = "experience")
@@ -23,7 +19,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Experience {
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Experience implements Serializable {
+
+	private static final long serialVersionUID = 1234567L;
 
 	@Id
 	@Column(name = "experience_id")
