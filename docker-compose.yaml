@@ -1,0 +1,34 @@
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  app:
+    build: ./
+    container_name: app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+  prometheus:
+    image: prom/prometheus:v2.35.0
+    volumes:
+      - ./data/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    container_name: prometheus
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana-oss:8.5.2
+    pull_policy: always
+    container_name: grafana
+    restart: unless-stopped
+    user: root
+    ports:
+      - 3000:3000
+    links:
+      - prometheus:prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_DOMAIN=localhost
+      - GF_LOG_MODE=console file
